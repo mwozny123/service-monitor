@@ -1,0 +1,209 @@
+<services>
+
+  <name>SystemD Daemons</name>
+
+  <description>
+    Starting and stopping is done via sudo, so make sure it is installed and configured correctly.
+    Since not all services work on every distribution, look through the list for a file that fits your specific system and activate it.
+    I didn't know how to externalize the 'systemctl' command - feel free to improve this file;)
+  </description>
+
+  <service id="cron-daemon" sudo="yes" icon="clock">
+    <name>Cron Daemon</name>
+    <description>Periodic command scheduler</description>
+    <installcheck>ls /usr/bin/cron</installcheck>
+    <runningcheck>pidof cron</runningcheck>
+    <startcommand>systemctl start cron</startcommand>
+    <stopcommand>systemctl stop cron</stopcommand>
+  </service>
+
+  <service id="cups-daemon" sudo="yes" icon="printer">
+    <name>CUPS Daemon</name>
+    <description>The Common Unix Printing System daemon</description>
+    <installcheck>ls /usr/sbin/cupsd</installcheck>
+    <runningcheck>pidof cupsd</runningcheck>
+    <startcommand>systemctl start cups</startcommand>
+    <stopcommand>systemctl stop cups</stopcommand>
+  </service>
+
+  <service id="apache2-daemon" sudo="yes" icon="apache">
+    <name>Apache2 Webserver</name>
+    <description>The most commonly used web server</description>
+    <installcheck>ls /usr/sbin/apache2</installcheck>
+    <runningcheck>pidof apache2</runningcheck>
+    <startcommand>systemctl start apache2</startcommand>
+    <stopcommand>systemctl stop apache2</stopcommand>
+  </service>
+
+  <service id="boinc-daemon" sudo="yes" icon="boinc">
+    <name>BOINC Client</name>
+    <description>Berkeley Open Infrastructure for Network Computing</description>
+    <installcheck>ls $INITDIR/boinc-client</installcheck>
+    <runningcheck>pidof boinc</runningcheck>
+    <startcommand>systemctl start boinc-client; sleep 1</startcommand>
+    <stopcommand>systemctl stop boinc-client; sleep 1</stopcommand>
+  </service>
+
+  <service id="mysql-daemon" priority="0" sudo="yes" icon="database">
+    <name>MySQL Database</name>
+    <description>Database server, mainly used for PHP</description>
+    <installcheck>ls $INITDIR/mysql</installcheck>
+    <runningcheck>ps ax | grep "/usr/sbin/mysqld" | grep -v grep | grep -v akonadi</runningcheck>
+    <startcommand>systemctl start mysql</startcommand>
+    <stopcommand>systemctl stop mysql</stopcommand>
+  </service>
+
+  <service id="wicd-daemon" sudo="yes" icon="wireless">
+    <name>WICD (Network manager)</name>
+    <description>An alternative to Network Manager</description>
+    <installcheck>ls $INITDIR/wicd</installcheck>
+    <runningcheck>ps ax | grep wicd-daemon | grep -v grep</runningcheck>
+    <startcommand>systemctl start wicd</startcommand>
+    <stopcommand>systemctl stop wicd</stopcommand>
+  </service>
+
+  <service id="bluetooth-daemon" sudo="yes" icon="bluetooth">
+    <name>Bluetooth</name>
+    <description>The bluetooth daemon</description>
+    <installcheck>ls $INITDIR/bluetooth</installcheck>
+    <runningcheck>pidof bluetoothd</runningcheck>
+    <startcommand>systemctl start bluetooth</startcommand>
+    <stopcommand>systemctl stop bluetooth</stopcommand>
+  </service>
+
+  <service id="proftp-daemon" sudo="yes" icon="network">
+    <name>ProFTP Server</name>
+    <description>Powerful, highly configurable FTP server</description>
+    <installcheck>ls $INITDIR/proftpd</installcheck>
+    <runningcheck>systemctl status proftpd</runningcheck>
+    <startcommand>systemctl start proftpd</startcommand>
+    <stopcommand>systemctl stop proftpd</stopcommand>
+  </service>
+
+  <service id="ssh-daemon" sudo="yes" icon="terminal">
+    <name>SSH Server</name>
+    <description>OpenSSH (Secure Shell) Server</description>
+    <installcheck>ls $INITDIR/ssh</installcheck>
+    <runningcheck>pidof sshd</runningcheck>
+    <startcommand>systemctl start ssh</startcommand>
+    <stopcommand>systemctl stop ssh</stopcommand>
+  </service>
+
+  <service id="ssh-daemon-2" sudo="yes" icon="sharp">
+    <name>SSH Server (alternative)</name>
+    <description>Use this definition if the other one does not work for you</description>
+    <installcheck>ls $INITDIR/sshd</installcheck>
+    <runningcheck>pidof sshd</runningcheck>
+    <startcommand>systemctl start sshd</startcommand>
+    <stopcommand>systemctl stop sshd</stopcommand>
+  </service>
+
+  <service id="samba-daemon" sudo="yes" icon="samba">
+    <name>Samba Server</name>
+    <description>SMB File Server</description>
+    <installcheck>ls $INITDIR/samba</installcheck>
+    <runningcheck>pidof smbd</runningcheck>
+    <startcommand>systemctl start samba</startcommand>
+    <stopcommand>systemctl stop samba</stopcommand>
+  </service>
+
+  <service id="samba-daemon-2" sudo="yes" icon="samba">
+    <name>Samba Server (alternative)</name>
+    <description>Use this definition if the other one does not work for you - submitted by xpertxx</description>
+    <installcheck>ls $INITDIR/smb</installcheck>
+    <runningcheck>pidof smbd</runningcheck>
+    <startcommand>systemctl start smb</startcommand>
+    <stopcommand>systemctl stop smb</stopcommand>
+  </service>
+
+  <service id="postgresql-daemon" sudo="yes" icon="database">
+    <name>PostgreSQL Server</name>
+    <description>PostgreSQL Database Server</description>
+    <installcheck>ls $INITDIR/postgresql</installcheck>
+    <runningcheck>pidof postgres</runningcheck>
+    <startcommand>systemctl start postgresql</startcommand>
+    <stopcommand>systemctl stop postgresql</stopcommand>
+  </service>
+
+  <service id="akonadi-daemon" icon="akonadi">
+    <name>Akonadi Services</name>
+    <description>Akonadi Personal Information Management</description>
+    <installcheck>ls /usr/bin/akonadictl</installcheck>
+    <runningcheck>pidof akonadiserver</runningcheck>
+    <startcommand>systemctl start akonadiserver</startcommand>
+    <stopcommand>systemctl stop akonadiserver</stopcommand>
+  </service>
+
+  <service id="nepomuk-daemon" icon="nepomuk">
+    <name>Nepomuk</name>
+    <description>Nepomuk Desktop Search Services</description>
+    <installcheck>ls /usr/bin/nepomukserver</installcheck>
+    <runningcheck>pidof nepomukserver</runningcheck>
+    <startcommand>/usr/bin/nepomukserver</startcommand>
+    <stopcommand>/usr/bin/akonadictl stop; qdbus org.kde.NepomukServer /nepomukserver org.kde.NepomukServer.quit</stopcommand>
+  </service>
+
+  <service id="tor-daemon" sudo="yes" icon="encrypt">
+    <name>TOR Daemon</name>
+    <description>The Onion Router anonimizing daemon - submitted by rysiek</description>
+    <installcheck>ls /usr/bin/tor</installcheck>
+    <runningcheck>pidof tor</runningcheck>
+    <startcommand>systemctl start tor</startcommand>
+    <stopcommand>systemctl stop tor</stopcommand>
+  </service>
+
+  <service id="avahi-daemon" sudo="yes" icon="connection">
+    <name>Avahi Daemon</name>
+    <description>Avahi Network Discovery Daemon</description>
+    <installcheck>ls $INITDIR/avahi-daemon</installcheck>
+    <runningcheck>pidof avahi-daemon</runningcheck>
+    <startcommand>systemctl avahi-daemon start</startcommand>
+    <stopcommand>systemctl avahi-daemon stop</stopcommand>
+  </service>
+
+  <service id="privoxy-daemon" sudo="yes" icon="encrypt">
+    <name>Privoxy</name>
+    <description>Proxy for enhanced security and privacy - submitted by FreeInfo</description>
+    <installcheck>ls $INITDIR/privoxy</installcheck>
+    <runningcheck>pidof privoxy</runningcheck>
+    <startcommand>systemctl privoxy start</startcommand>
+    <stopcommand>systemctl privoxy stop</stopcommand>
+  </service>
+
+  <service id="dropbox-daemon" sudo="yes" icon="network">
+    <name>Dropbox</name>
+    <description>Dropbox cloud storage and file sync - submitted by abmoraz</description>
+    <installcheck>ls $HOME/.dropbox-dist/dropboxd</installcheck>
+    <runningcheck>pidof dropbox</runningcheck>
+    <startcommand>$HOME/.dropbox-dist/dropboxd &amp;</startcommand>
+    <stopcommand>killall dropbox</stopcommand>
+  </service>
+
+  <service id="tomcat6-daemon" sudo="yes" icon="apache">
+    <name>Tomcat 6</name>
+    <description>Tomcat 6 - submitted by Kais Hassan</description>
+    <installcheck>ps -ef | grep tomcat | grep -v grep | grep -v restart | awk '{print $2}'</installcheck>
+    <runningcheck>pidof tomcat6</runningcheck>
+    <startcommand>service start tomcat6</startcommand>
+    <stopcommand>service stop tomcat6</stopcommand>
+  </service>
+
+  <service id="pureftp-daemon" sudo="yes" icon="network">
+    <name>Pure-FTP Server</name>
+    <description>Pure-FTPd FTP service</description>
+    <installcheck>ls $INITDIR/pure-ftpd</installcheck>
+    <runningcheck>pidof "pure-ftpd (SERVER)"</runningcheck>
+    <startcommand>systemctl start pure-ftpd 2>/dev/null</startcommand>
+    <stopcommand>systemctl stop pure-ftpd 2>/dev/null</stopcommand>
+  </service>
+
+  <service id="openvpn-daemon" sudo="yes" icon="network">
+    <name>OpenVPN</name>
+    <description>OpenVPN service</description>
+    <installcheck>ls $INITDIR/openvpn</installcheck>
+    <runningcheck>pidof openvpn</runningcheck>
+    <startcommand>systemctl stop openvpn</startcommand>
+    <stopcommand>systemctl stop openvpn</stopcommand>
+  </service>
+
+</services>
