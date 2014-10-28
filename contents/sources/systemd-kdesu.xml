@@ -1,0 +1,216 @@
+<services>
+
+  <name>SystemD Daemons with using kdesu interface [for those who have problems with sudo on new system-monitor]</name>
+
+  <description>
+    Starting and stopping is done via sudo, so make sure it is installed and configured correctly.
+    Since not all services work on every distribution, look through the list for a file that fits your specific system and activate it.
+    I didn't know how to externalize the 'systemctl' command - feel free to improve this file;)
+    
+    
+    TO use SUDO with KDESU (https://wiki.archlinux.org/index.php/sudo#kdesu) -> Create/edit the file ~/.kde4/share/config/kdesurc with those 2 lines:
+[super-user-command]
+super-user-command=sudo
+    
+    
+  </description>
+
+  <service id="cron-daemon" sudo="no" icon="clock">
+    <name>Cron Daemon</name>
+    <description>Periodic command scheduler</description>
+    <installcheck>ls /usr/bin/cron</installcheck>
+    <runningcheck>pidof cron</runningcheck>
+    <startcommand>kdesu systemctl start cron &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop cron &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="cups-daemon" sudo="no" icon="printer">
+    <name>CUPS Daemon</name>
+    <description>The Common Unix Printing System daemon</description>
+    <installcheck>ls /usr/sbin/cupsd</installcheck>
+    <runningcheck>pidof cupsd</runningcheck>
+    <startcommand>kdesu systemctl start cups &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop cups &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="apache2-daemon" sudo="no" icon="apache">
+    <name>Apache2 Webserver</name>
+    <description>The most commonly used web server</description>
+    <installcheck>ls /usr/sbin/apache2</installcheck>
+    <runningcheck>pidof apache2</runningcheck>
+    <startcommand>kdesu systemctl start apache2 &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop apache2 &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="boinc-daemon" sudo="no" icon="boinc">
+    <name>BOINC Client</name>
+    <description>Berkeley Open Infrastructure for Network Computing</description>
+    <installcheck>ls /usr/bin/boinc-client</installcheck>
+    <runningcheck>pidof boinc</runningcheck>
+    <startcommand>kdesu systemctl start boinc-client; sleep 1 &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop boinc-client; sleep 1 &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="mysql-daemon" priority="0" sudo="no" icon="database">
+    <name>MySQL Database</name>
+    <description>Database server, mainly used for PHP</description>
+    <installcheck>ls /usr/bin/mysql</installcheck>
+    <runningcheck>ps ax | grep "/usr/sbin/mysqld" | grep -v grep | grep -v akonadi</runningcheck>
+    <startcommand>kdesu systemctl start mysql &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop mysql &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="wicd-daemon" sudo="no" icon="wireless">
+    <name>WICD (Network manager)</name>
+    <description>An alternative to Network Manager</description>
+    <installcheck>ls /usr/bin/wicd</installcheck>
+    <runningcheck>ps ax | grep wicd-daemon | grep -v grep</runningcheck>
+    <startcommand>kdesu systemctl start wicd &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop wicd &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="bluetooth-daemon" sudo="no" icon="bluetooth">
+    <name>Bluetooth</name>
+    <description>The bluetooth daemon</description>
+    <installcheck>ls /usr/bin/bluetooth</installcheck>
+    <runningcheck>pidof bluetoothd</runningcheck>
+    <startcommand>kdesu systemctl start bluetooth &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop bluetooth &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="proftp-daemon" sudo="no" icon="network">
+    <name>ProFTP Server</name>
+    <description>Powerful, highly configurable FTP server</description>
+    <installcheck>ls /usr/bin/proftpd</installcheck>
+    <runningcheck>systemctl status proftpd</runningcheck>
+    <startcommand>kdesu systemctl start proftpd &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop proftpd &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="ssh-daemon" sudo="no" icon="terminal">
+    <name>SSH Server</name>
+    <description>OpenSSH (Secure Shell) Server</description>
+    <installcheck>ls /usr/bin/ssh</installcheck>
+    <runningcheck>pidof sshd</runningcheck>
+    <startcommand>kdesu systemctl start ssh &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop ssh &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="ssh-daemon-2" sudo="no" icon="sharp">
+    <name>SSH Server (alternative)</name>
+    <description>Use this definition if the other one does not work for you</description>
+    <installcheck>ls /usr/bin/sshd</installcheck>
+    <runningcheck>pidof sshd</runningcheck>
+    <startcommand>kdesu systemctl start sshd &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop sshd &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="samba-daemon" sudo="no" icon="samba">
+    <name>Samba Server</name>
+    <description>SMB File Server</description>
+    <installcheck>ls /usr/bin/samba</installcheck>
+    <runningcheck>pidof smbd</runningcheck>
+    <startcommand>kdesu systemctl start samba &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop samba &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="samba-daemon-2" sudo="no" icon="samba">
+    <name>Samba Server (alternative)</name>
+    <description>Use this definition if the other one does not work for you - submitted by xpertxx</description>
+    <installcheck>ls /usr/bin/smb</installcheck>
+    <runningcheck>pidof smbd</runningcheck>
+    <startcommand>kdesu systemctl start smb &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop smb &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="postgresql-daemon" sudo="no" icon="database">
+    <name>PostgreSQL Server</name>
+    <description>PostgreSQL Database Server</description>
+    <installcheck>ls /usr/bin/postgresql</installcheck>
+    <runningcheck>pidof postgres</runningcheck>
+    <startcommand>kdesu systemctl start postgresql &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop postgresql &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="akonadi-daemon" icon="akonadi">
+    <name>Akonadi Services</name>
+    <description>Akonadi Personal Information Management</description>
+    <installcheck>ls /usr/bin/akonadictl</installcheck>
+    <runningcheck>pidof akonadiserver</runningcheck>
+    <startcommand>kdesu systemctl start akonadiserver &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop akonadiserver &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="nepomuk-daemon" icon="nepomuk">
+    <name>Nepomuk</name>
+    <description>Nepomuk Desktop Search Services</description>
+    <installcheck>ls /usr/bin/nepomukserver</installcheck>
+    <runningcheck>pidof nepomukserver</runningcheck>
+    <startcommand>/usr/bin/nepomukserver &amp;> /dev/null</startcommand>
+    <stopcommand>/usr/bin/akonadictl stop; qdbus org.kde.NepomukServer /nepomukserver org.kde.NepomukServer.quit</stopcommand>
+  </service>
+
+  <service id="tor-daemon" sudo="no" icon="encrypt">
+    <name>TOR Daemon</name>
+    <description>The Onion Router anonimizing daemon - submitted by rysiek</description>
+    <installcheck>ls /usr/bin/tor</installcheck>
+    <runningcheck>pidof tor</runningcheck>
+    <startcommand>kdesu systemctl start tor &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop tor &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="avahi-daemon" sudo="no" icon="connection">
+    <name>Avahi Daemon</name>
+    <description>Avahi Network Discovery Daemon</description>
+    <installcheck>ls /usr/bin/avahi-daemon</installcheck>
+    <runningcheck>pidof avahi-daemon</runningcheck>
+    <startcommand>systemctl avahi-daemon start &amp;> /dev/null</startcommand>
+    <stopcommand>systemctl avahi-daemon stop &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="privoxy-daemon" sudo="no" icon="encrypt">
+    <name>Privoxy</name>
+    <description>Proxy for enhanced security and privacy - submitted by FreeInfo</description>
+    <installcheck>ls /usr/bin/privoxy</installcheck>
+    <runningcheck>pidof privoxy</runningcheck>
+    <startcommand>systemctl privoxy start &amp;> /dev/null</startcommand>
+    <stopcommand>systemctl privoxy stop &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="dropbox-daemon" sudo="no" icon="network">
+    <name>Dropbox</name>
+    <description>Dropbox cloud storage and file sync - submitted by abmoraz</description>
+    <installcheck>ls $HOME/.dropbox-dist/dropboxd</installcheck>
+    <runningcheck>pidof dropbox</runningcheck>
+    <startcommand>$HOME/.dropbox-dist/dropboxd &amp;</startcommand>
+    <stopcommand>killall dropbox</stopcommand>
+  </service>
+
+  <service id="tomcat6-daemon" sudo="no" icon="apache">
+    <name>Tomcat 6</name>
+    <description>Tomcat 6 - submitted by Kais Hassan</description>
+    <installcheck>ps -ef | grep tomcat | grep -v grep | grep -v restart | awk '{print $2}'</installcheck>
+    <runningcheck>pidof tomcat6</runningcheck>
+    <startcommand>service start tomcat6 &amp;> /dev/null</startcommand>
+    <stopcommand>service stop tomcat6 &amp;> /dev/null</stopcommand>
+  </service>
+
+  <service id="pureftp-daemon" sudo="no" icon="network">
+    <name>Pure-FTP Server</name>
+    <description>Pure-FTPd FTP service</description>
+    <installcheck>ls /usr/bin/pure-ftpd</installcheck>
+    <runningcheck>pidof "pure-ftpd (SERVER)"</runningcheck>
+    <startcommand>kdesu systemctl start pure-ftpd 2>/dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop pure-ftpd 2>/dev/null</stopcommand>
+  </service>
+
+  <service id="openvpn-daemon" sudo="no" icon="network">
+    <name>OpenVPN</name>
+    <description>OpenVPN service</description>
+    <installcheck>ls /usr/bin/openvpn</installcheck>
+    <runningcheck>pidof openvpn</runningcheck>
+    <startcommand>kdesu systemctl stop openvpn &amp;> /dev/null</startcommand>
+    <stopcommand>kdesu systemctl stop openvpn &amp;> /dev/null</stopcommand>
+  </service>
+
+</services>
